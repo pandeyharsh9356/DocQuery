@@ -1,19 +1,13 @@
-import path from 'node:path';
+import { PrismaClient } from '@prisma/client'
 
-import { config } from 'dotenv';
-import { PrismaClient } from '@prisma/client';
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 
-config({ path: path.resolve(process.cwd(), '.env.local'), override: true });
-config({ path: path.resolve(process.cwd(), '.env'), override: true });
+export const prisma =
+  globalForPrisma.prisma ||
+  new PrismaClient({
+    log: ['query'],
+  })
 
-const globalForPrisma = globalThis as unknown as {
-  prisma?: PrismaClient;
-};
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
-
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
-}
-
-export default prisma;
+export default prisma
