@@ -1,0 +1,48 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  clerkUserId  String     @unique
+  email        String     @unique
+  name         String?
+  imageUrl     String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  documents    Document[]
+}
+
+model Document {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String    @db.ObjectId
+  fileName    String
+  fileUrl     String
+  fileKey     String
+  status      String    @default("PENDING")
+  textContent String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages    Message[]
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+}
+
+model Message {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  documentId String      @db.ObjectId
+  userId     String      @db.ObjectId
+  role       MessageRole
+  content    String
+  createdAt  DateTime    @default(now())
+  document   Document    @relation(fields: [documentId], references: [id], onDelete: Cascade)
+}
