@@ -4,6 +4,7 @@ import { UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import DocumentDashboard from './DocumentDashboard';
+import UploadForm from './UploadForm';
 
 // Ye function update kar diya hai
 async function submitChatAction(formData: FormData) {
@@ -96,21 +97,7 @@ export default async function DashboardPage() {
           <div className="h-px bg-zinc-100 dark:bg-zinc-800/80" />
 
           {/* Form with premium input stylings */}
-          <form action="/api/uploadthing" method="post" className="flex flex-wrap items-center gap-3">
-            <input
-              type="file"
-              name="file"
-              accept="application/pdf"
-              required
-              className="w-full max-w-md rounded-full border border-zinc-200 bg-zinc-50/50 px-4 py-2 text-sm text-zinc-600 shadow-sm transition-all file:mr-4 file:rounded-full file:border-0 file:bg-zinc-950 file:px-4 file:py-1.5 file:text-xs file:font-semibold file:text-white file:transition-all hover:file:bg-zinc-800 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/40 dark:text-zinc-400 dark:file:bg-zinc-50 dark:file:text-black dark:hover:file:bg-zinc-200"
-            />
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center rounded-full bg-zinc-950 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-zinc-800 hover:scale-[1.01] active:scale-[0.99] dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-200"
-            >
-              Upload PDF
-            </button>
-          </form>
+          <UploadForm />
         </header>
 
         {/* Humne submitChatAction ko yahan pass kar diya hai */}

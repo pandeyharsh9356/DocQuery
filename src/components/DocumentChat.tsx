@@ -168,8 +168,8 @@ export default function DocumentChat({ documentId, fileName, onClose }: Document
               message.role === 'user'
                 ? 'flex justify-end animate-fade-in'
                 : message.role === 'assistant'
-                ? 'flex justify-start animate-fade-in'
-                : 'flex justify-center'
+                  ? 'flex justify-start animate-fade-in'
+                  : 'flex justify-center'
             }
           >
             {message.role === 'system' ? (
