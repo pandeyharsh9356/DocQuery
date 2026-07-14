@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
 
 import DocumentChat from '@/components/DocumentChat';
 
@@ -28,6 +29,33 @@ export default function DocumentDashboard({ documents }: DocumentDashboardProps)
     setPrevDocuments(documents);
     setDocList(documents);
   }
+
+  useEffect(() => {
+    const handleUploadStart = (e: Event) => {
+      const customEvent = e as CustomEvent<{ fileName: string }>;
+      const newDoc: DocumentSummary = {
+        id: 'optimistic-uploading',
+        fileName: customEvent.detail.fileName,
+        fileUrl: '',
+        fileKey: 'optimistic-uploading',
+        status: 'UPLOADING',
+        createdAt: new Date(),
+      };
+      setDocList((prev) => [newDoc, ...prev]);
+    };
+
+    const handleUploadError = () => {
+      setDocList((prev) => prev.filter(doc => doc.id !== 'optimistic-uploading'));
+    };
+
+    window.addEventListener('document-upload-start', handleUploadStart);
+    window.addEventListener('document-upload-error', handleUploadError);
+
+    return () => {
+      window.removeEventListener('document-upload-start', handleUploadStart);
+      window.removeEventListener('document-upload-error', handleUploadError);
+    };
+  }, []);
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this PDF file? This action is permanent.')) return;
@@ -81,60 +109,81 @@ export default function DocumentDashboard({ documents }: DocumentDashboardProps)
           <ul className="divide-y divide-zinc-100 overflow-hidden rounded-xl border border-zinc-200/80 dark:divide-zinc-800/60 dark:border-zinc-800/85">
             {docList.map((document) => {
               const isSelected = selectedDocument?.id === document.id;
+              const isUploading = document.status === 'UPLOADING';
               return (
                 <li 
                   key={document.id} 
                   className={`flex flex-col gap-4 p-4 transition-all duration-205 sm:flex-row sm:items-center sm:justify-between hover:bg-zinc-50/40 dark:hover:bg-zinc-900/30 ${
                     isSelected ? 'bg-zinc-50/60 dark:bg-zinc-900/20' : ''
-                  }`}
+                  } ${isUploading ? 'opacity-70 select-none animate-pulse' : ''}`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-lg dark:bg-zinc-850">
-                      📄
+                      {isUploading ? (
+                        <Loader2 className="h-5 w-5 animate-spin text-zinc-500 dark:text-zinc-450" />
+                      ) : (
+                        "📄"
+                      )}
                     </div>
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-50">{document.fileName}</p>
                       <div className="mt-1 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
-                        <span>Uploaded {new Date(document.createdAt).toLocaleDateString()}</span>
-                        <span>•</span>
-                        <span className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
-                          document.status === 'UPLOADED' 
-                            ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-400' 
-                            : 'bg-amber-50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-400'
-                        }`}>
-                          {document.status}
-                        </span>
+                        {isUploading ? (
+                          <span className="inline-flex items-center gap-1 font-medium text-zinc-500 dark:text-zinc-400">
+                            Uploading to cloud...
+                          </span>
+                        ) : (
+                          <>
+                            <span>Uploaded {new Date(document.createdAt).toLocaleDateString()}</span>
+                            <span>•</span>
+                            <span className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
+                              document.status === 'UPLOADED' 
+                                ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-400' 
+                                : 'bg-amber-50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-400'
+                            }`}>
+                              {document.status}
+                            </span>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedDocument(document)}
-                      className={`rounded-full px-4 py-2 text-xs font-semibold shadow-sm transition-all duration-200 ${
-                        isSelected 
-                          ? 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-250 dark:hover:bg-zinc-700' 
-                          : 'bg-zinc-950 text-white hover:bg-zinc-800 dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-200'
-                      }`}
-                    >
-                      {isSelected ? 'Active Chat' : 'Chat'}
-                    </button>
-                    <Link 
-                      href={document.fileUrl} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-600 shadow-sm transition-all hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-850 dark:hover:text-zinc-200"
-                    >
-                      View PDF
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(document.id)}
-                      className="rounded-full border border-rose-200 bg-rose-50/50 px-4 py-2 text-xs font-semibold text-rose-600 shadow-sm transition-all hover:bg-rose-100 hover:text-rose-700 dark:border-rose-900/30 dark:bg-rose-955/10 dark:text-rose-450 dark:hover:bg-rose-950/30"
-                    >
-                      Delete
-                    </button>
+                    {isUploading ? (
+                      <span className="inline-flex items-center rounded-full bg-zinc-100/60 px-3 py-1.5 text-[10px] font-semibold text-zinc-500 dark:bg-zinc-850/65 dark:text-zinc-450 border border-zinc-200/10">
+                        Uploading...
+                      </span>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedDocument(document)}
+                          className={`rounded-full px-4 py-2 text-xs font-semibold shadow-sm transition-all duration-200 ${
+                            isSelected 
+                              ? 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-250 dark:hover:bg-zinc-700' 
+                              : 'bg-zinc-950 text-white hover:bg-zinc-850 dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-200'
+                          }`}
+                        >
+                          {isSelected ? 'Active Chat' : 'Chat'}
+                        </button>
+                        <Link 
+                          href={document.fileUrl} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-600 shadow-sm transition-all hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-850 dark:hover:text-zinc-200"
+                        >
+                          View PDF
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(document.id)}
+                          className="rounded-full border border-rose-200 bg-rose-50/50 px-4 py-2 text-xs font-semibold text-rose-600 shadow-sm transition-all hover:bg-rose-100 hover:text-rose-700 dark:border-rose-900/30 dark:bg-rose-955/10 dark:text-rose-450 dark:hover:bg-rose-950/30"
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
                   </div>
                 </li>
               );
