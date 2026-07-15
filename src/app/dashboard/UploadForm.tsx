@@ -12,7 +12,7 @@ export default function UploadForm() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { startUpload, isUploading } = useUploadThing('pdfUploader', {
+  const { startUpload, isUploading } = useUploadThing('pdf', {
     onUploadProgress: (progress) => {
       setUploadProgress(progress);
     },
