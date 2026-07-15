@@ -1,40 +1,79 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📄 DocQuery
+> **Your intelligent workspace for secure PDF document analysis and AI-powered chat.**
 
-## Getting Started
+**Live Demo → https://doc-query-phi.vercel.app/**
 
-First, run the development server:
+## Home Page
+<img width="1877" height="897" alt="image" src="https://github.com/user-attachments/assets/15aa779d-b4c5-484e-be7a-921a1991c783" />
 
-```bash
+
+## Dashboard Page
+<img width="1880" height="851" alt="image" src="https://github.com/user-attachments/assets/5d0475b3-7c49-4456-be79-5e49d2322a0e" />
+
+
+## Chat Page
+<img width="1876" height="890" alt="image" src="https://github.com/user-attachments/assets/634dd8d1-42c8-4be9-86b8-20f301cb21b5" />
+
+
+---
+
+## 🚀 Features
+*   **⚡ Instant Extraction**: Upload any PDF and extract content in seconds using our custom pipeline.[cite: 1]
+*   **🧠 AI-Powered Chat**: Ask complex questions and get precise answers derived directly from your documents.[cite: 1]
+*   **🔒 Secure & Private**: Your files are stored securely and strictly isolated per user session.[cite: 1]
+*   **📊 Unified Dashboard**: Manage and navigate through all your uploaded documents in one beautiful workspace.[cite: 1]
+
+---
+
+## 🛠 Tech Stack
+*   **Framework**: `Next.js 15 (App Router)`
+*   **Language**: `TypeScript` (Strict Mode)
+*   **Database**: `MongoDB` & `Prisma`
+*   **Auth**: `Clerk`
+*   **Storage**: `UploadThing`
+*   **Styling**: `Tailwind CSS`
+*   **Deployment**: `Vercel`
+
+---
+
+## 💻 Quick Start
+
+**1. Clone the repo**
+```bash```
+git clone [https://github.com/pandeyharsh9356/DocQuery](https://github.com/pandeyharsh9356/DocQuery)
+
+**2. Install dependencies**
+npm install
+
+**3. Setup environment variables**
+cp .env.example .env 
+Add your Clerk, Database, and UploadThing keys here
+
+**4. Push schema to database**
+npx prisma db push
+
+**5. Run the magic!**
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏗 Architecture 
+**DocQuery follows a clean, scalable server-side rendering architecture.**  
+**Authentication:** Managed via Clerk to ensure enterprise-grade security.  
+**File Management:** UploadThing handles secure file uploads with strict MIME-type allow-listing.  
+**Database Layer:** Prisma connects to a managed Postgres instance for high availability.  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+👨‍💻 Developer
+Harsh Pandey
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+B.Sc Information Technology Student
+Mumbai, India
 
-## Learn More
+📧 Email: pandeyharsh9356@gmail.com
 
-To learn more about Next.js, take a look at the following resources:
+🐙 GitHub: https://github.com/pandeyharsh9356
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+💼 LinkedIn: https://linkedin.com/in/harsh-pandey-9162913a7
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+⭐ Support
+If you found this project useful, please consider giving it a star ⭐ on GitHub.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# DocQuery
->>>>>>> b50eef8b4f0c9e968a65fd5880830e4648bc27fb
+Made with ❤️ by Harsh Pandey
