@@ -61,7 +61,7 @@ npm run dev
 **File Management:** UploadThing handles secure file uploads with strict MIME-type allow-listing.  
 **Database Layer:** Prisma connects to a managed Postgres instance for high availability.  
 
-👨‍💻 Developer
+## 👨‍💻 Developer
 Harsh Pandey
 
 B.Sc Information Technology Student
@@ -73,7 +73,7 @@ Mumbai, India
 
 💼 LinkedIn: https://linkedin.com/in/harsh-pandey-9162913a7
 
-⭐ Support
+## ⭐ Support
 If you found this project useful, please consider giving it a star ⭐ on GitHub.
 
 Made with ❤️ by Harsh Pandey
